@@ -1,6 +1,3 @@
-// fitur/kasir/models.dart
-
-/// Model untuk Item di dalam Keranjang Belanja.
 class CartItem {
   final String name;
   final double price;

@@ -1,10 +1,6 @@
-// struk_pembayaran_page.dart
-
 import 'package:flutter/material.dart';
-// Sesuaikan jalur impor model dan warna
 import 'package:donatopia/fitur/kasir/models.dart'; 
 
-// Menggunakan definisi warna yang sama dari KeranjangDetailWidget
 class DonatopiaColors {
   static const Color backgroundSoftPink = Color.fromARGB(255, 240, 229, 231);
   static const Color cardValueColor = Color(0xFFCC6073);
@@ -31,7 +27,6 @@ class StrukPembayaranPage extends StatelessWidget {
     required this.paymentMethod,
   });
 
-  // Data Toko Statis sesuai gambar struk yang diberikan
   final String _storeName = 'Donatopia';
   final String _address = 'Jl. Trisula Panggang Lele';
   final String _phone = '089689708118';
@@ -43,7 +38,7 @@ class StrukPembayaranPage extends StatelessWidget {
     return '${now.day}/${now.month}/${now.year}, ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
   }
 
-  // Nomor Transaksi Random (TRX + Tanggal + 3 digit unik)
+  // Nomor Transaksi Random
   String _generateTransactionNumber() {
     final now = DateTime.now();
     // Format: TRX20251015167153 (TRX + YYYYMMDD + random 3 digit)
@@ -211,7 +206,6 @@ class StrukPembayaranPage extends StatelessWidget {
     );
   }
 
-  // Widget untuk baris detail transaksi (No. Transaksi, Tanggal, Pelanggan)
   Widget _buildTransactionDetail(String label, String value, {bool isBoldValue = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -231,7 +225,6 @@ class StrukPembayaranPage extends StatelessWidget {
     );
   }
 
-  // Widget untuk baris ringkasan (Subtotal, Disc, Total)
   Widget _buildSummaryRow(String label, double amount, {bool isTotal = false, bool isDiscount = false}) {
     // Mengambil hanya angka tanpa 'Rp.'
     final formattedAmount = _formatRupiah(amount, includeRp: false);

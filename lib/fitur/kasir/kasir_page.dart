@@ -25,9 +25,6 @@ class ProductPage extends StatelessWidget {
   }
 }
 
-// =========================================================================
-
-// Definisi warna Donatopia (Lengkap)
 class DonatopiaColors {
   static const Color backgroundSoftPink = Color.fromARGB(255, 240, 229, 231);
   static const Color cardValueColor = Color(0xFFCC6073);
@@ -43,7 +40,6 @@ class DonatopiaColors {
 
 
 class KasirPage extends StatefulWidget {
-  // 1. TAMBAHAN: Definisi routeName statis untuk navigasi dari Sidebar
   static const String routeName = '/kasir'; 
     
   const KasirPage({super.key});
@@ -59,7 +55,6 @@ class _KasirPageState extends State<KasirPage> {
 
   List<CartItem> _cartItems = [];
 
-  // DATA PRODUK (Data simulasi)
   final List<Map<String, dynamic>> donutProductsData = const [
     {"name": "BLUEBERRY BLISS", "price": 23000, "image": "blueberry_bliss.png", "width": 80.0, "height": 90.0},
     {"name": "SUNNY LEMON", "price": 21000, "image": "sunny_lemon.png", "width": 80.0, "height": 50.0},
@@ -127,7 +122,6 @@ class _KasirPageState extends State<KasirPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 2. TAMBAHAN: Tambahkan CustomDrawer sebagai endDrawer (Drawer kanan)
       endDrawer: const CustomDrawer(currentRoute: KasirPage.routeName), 
         
       backgroundColor: DonatopiaColors.backgroundSoftPink, 
@@ -150,7 +144,6 @@ class _KasirPageState extends State<KasirPage> {
                     ),
                   ],
                 ),
-                // Menggunakan Builder agar tombol menu bisa menemukan Scaffold
                 child: Builder(
                   builder: (innerContext) => _buildHeader(innerContext),
                 ), 
@@ -296,8 +289,6 @@ class _KasirPageState extends State<KasirPage> {
       ],
     );
   }
-  
-  // --- Widget Pembantu Lainnya ---
 
   Widget _buildSearchBar() {
     return Container(

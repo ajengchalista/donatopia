@@ -1,12 +1,8 @@
-// keranjang_detail_widget.dart
-
 import 'package:flutter/material.dart';
-// ❗ IMPOR MODEL (Pastikan jalur ini sesuai)
 import 'package:donatopia/fitur/kasir/models.dart'; 
-// ❗ IMPOR STRUK (Pastikan jalur ini sesuai)
 import 'package:donatopia/fitur/kasir/struk_pembayaran_page.dart'; 
 
-// Definisi Warna (Duplikasi di sini hanya untuk memastikan widget ini berfungsi jika belum dipindahkan ke file style terpisah)
+
 class DonatopiaColors {
   static const Color cardBackground = Colors.white;
   static const Color cardValueColor = Color(0xFFCC6073); // Pink gelap/merah muda
@@ -59,8 +55,6 @@ class _KeranjangDetailWidgetState extends State<KeranjangDetailWidget> {
     _customerController.dispose();
     super.dispose();
   }
-
-  // --- Logika Penghitungan ---
   
   double get _subtotal {
     return _cartItems.fold(0.0, (sum, item) => sum + (item.price * item.quantity));

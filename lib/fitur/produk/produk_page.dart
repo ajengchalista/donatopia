@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Tambahkan ini jika diperlukan untuk input number
+import 'package:flutter/services.dart'; 
 import 'package:donatopia/widgets/custom_drawer.dart';
 
-// Definisi warna Donatopia
 class DonatopiaColors {
   static const Color backgroundSoftPink = Color.fromARGB(255, 240, 229, 231);
   static const Color cardValueColor = Color(0xFFCC6073);
@@ -14,8 +13,8 @@ class DonatopiaColors {
   static const Color searchBarBackground = Color.fromARGB(255, 255, 245, 246);
   static const Color softPinkText = Color.fromRGBO(247, 178, 190, 1);
   static const Color headerTextColor = softPinkText;
-  static const Color cardBackground = Colors.white; // Tambahkan dari contoh sebelumnya
-  static const Color cardLabelColor = Color.fromARGB(255, 139, 133, 134); // Tambahkan dari contoh sebelumnya
+  static const Color cardBackground = Colors.white;
+  static const Color cardLabelColor = Color.fromARGB(255, 139, 133, 134); 
 }
 
 class Product {
@@ -185,11 +184,11 @@ class _ProdukPageState extends State<ProdukPage> {
 
   void _deleteProduct(Product product) {
     setState(() {
-      // Hapus produk dari list berdasarkan ID unik
+
       _products.removeWhere((p) => p.id == product.id);
     });
 
-    // Tampilkan notifikasi
+    // notifikasi
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Produk "${product.name}" berhasil dihapus.'),
@@ -204,7 +203,6 @@ class _ProdukPageState extends State<ProdukPage> {
     _priceController.clear();
     _stockController.clear();
     _minStockController.clear();
-    // Gunakan kategori pertama yang bukan 'Semua Kategori' sebagai default
     _modalSelectedCategory = categories.firstWhere((c) => c != 'Semua Kategori'); 
 
     _showProductModal(null);
@@ -281,15 +279,14 @@ class _ProdukPageState extends State<ProdukPage> {
                         ),
                         const SizedBox(height: 10),
 
-                        // Form Grid (Harga, Stok, Stok Minimal)
                         Row(
                           children: [
                             // Harga
                             Expanded(child: _buildModalTextField(
                               controller: _priceController,
-                              label: 'Harga (Angka Saja) *',
+                              label: 'Harga',
                               keyboardType: TextInputType.number,
-                              inputFormatters: [FilteringTextInputFormatter.digitsOnly], // Opsional: Hanya izinkan angka
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly], 
                             )),
                             const SizedBox(width: 10),
                             // Stok
@@ -311,7 +308,6 @@ class _ProdukPageState extends State<ProdukPage> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Tombol Aksi (Batal & Simpan)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -347,10 +343,8 @@ class _ProdukPageState extends State<ProdukPage> {
 
   void _saveProduct(Product? originalProduct, BuildContext dialogContext) { //simpan produk
     if (_formKey.currentState!.validate()) {
-      // 1. Ambil data baru
       final newName = _nameController.text;
       final newDescription = _descriptionController.text.isEmpty ? null : _descriptionController.text;
-      // Gunakan int.parse karena validator sudah memastikan input adalah angka
       final newPrice = int.parse(_priceController.text); 
       final newStock = int.parse(_stockController.text);
       final newMinStock = int.parse(_minStockController.text);
@@ -385,7 +379,7 @@ class _ProdukPageState extends State<ProdukPage> {
           id: _getNewId(), 
           name: newName,
           price: newPrice,
-          image: "default_donut.png", // Asumsi gambar default
+          image: "default_donut.png", 
           category: newCategory,
           description: newDescription,
           stock: newStock,
@@ -408,8 +402,6 @@ class _ProdukPageState extends State<ProdukPage> {
       Navigator.of(dialogContext).pop();
     }
   }
-
-  // --- WIDGET PEMBANTU (MODAL) ---
 
   Widget _buildModalTextField({
     required TextEditingController controller,
@@ -520,14 +512,10 @@ class _ProdukPageState extends State<ProdukPage> {
       ],
     );
   }
-  
-  // --- WIDGET UTAMA (BUILD) ---
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
       backgroundColor: DonatopiaColors.backgroundSoftPink,
-      
-      // >>> INI ADALAH IMPLEMENTASI SIDEBAR (DRAWER KANAN) <<<
       endDrawer: const CustomDrawer(currentRoute: ProdukPage.routeName),
       
       floatingActionButton: FloatingActionButton(
@@ -594,8 +582,6 @@ class _ProdukPageState extends State<ProdukPage> {
       ),
     );
   }
-
-  // --- WIDGET PEMBANTU (HALAMAN) ---
   
   Widget _buildSearchBar() {
     return Container(
@@ -843,7 +829,6 @@ class _ProdukPageState extends State<ProdukPage> {
           ],
         ),
         
-        // >>> INI ADALAH TOMBOL UNTUK MEMBUKA SIDEBAR <<<
         Builder(
           builder: (context) {
             return IconButton(

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart'; // <--- TAMBAHKAN INI UNTUK MENGGUNAKAN WIDGET IMAGE
+import 'package:flutter/widgets.dart'; 
 import 'package:intl/intl.dart';
-// PASTIKAN PATH INI BENAR
 import 'package:donatopia/widgets/custom_drawer.dart'; 
 
-// ----------------------------------------------------
-// Definisi Warna (Tetap)
-// ----------------------------------------------------
 class DonatopiaColors {
   static const Color backgroundSoftPink = Color.fromARGB(255, 249, 244, 246);
   static const Color cardValueColor = Color(0xFFCC6073); // Pink Gelap
@@ -23,9 +19,6 @@ class DonatopiaColors {
   static const Color addButtonColor = primaryPink;
 }
 
-// ----------------------------------------------------
-// Model untuk Data Pesanan dalam Riwayat (Tetap)
-// ----------------------------------------------------
 class OrderItem {
   final String name;
   final int quantity;
@@ -36,9 +29,6 @@ class OrderItem {
   int get subtotal => quantity * pricePerItem;
 }
 
-// ----------------------------------------------------
-// Model untuk Riwayat Pelanggan (Tetap)
-// ----------------------------------------------------
 class CustomerHistory {
   final String id;
   final String name;
@@ -61,10 +51,6 @@ class CustomerHistory {
   int get total => subtotal - discount;
 }
 
-
-// ----------------------------------------------------
-// 1. StatefulWidget PelangganPage
-// ----------------------------------------------------
 class PelangganPage extends StatefulWidget {
   // 💡 PERBAIKAN: Definisikan routeName sesuai kebutuhan CustomDrawer
   static const String routeName = '/pelanggan';
@@ -126,13 +112,11 @@ class _PelangganPageState extends State<PelangganPage> {
     ];
   }
 
-  // Helper untuk format harga (Tetap)
   String _formatPrice(int price) {
     final format = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ', decimalDigits: 0);
     return format.format(price).replaceAll('.', ',');
   }
 
-  // LOGIKA PEMFILTERAN (Tetap)
   List<CustomerHistory> get _filteredCustomerHistory {
     if (_searchText.isEmpty) {
       return _customerHistory;
@@ -144,9 +128,6 @@ class _PelangganPageState extends State<PelangganPage> {
     }).toList();
   }
   
-  // ----------------------------------------------------
-  // 2. Metode build()
-  // ----------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final filteredHistory = _filteredCustomerHistory;
@@ -155,7 +136,6 @@ class _PelangganPageState extends State<PelangganPage> {
     return Scaffold(
       backgroundColor: DonatopiaColors.backgroundSoftPink,
       
-      // 💡 PERBAIKAN: Ganti _buildSidebar() dengan CustomDrawer
       endDrawer: const CustomDrawer(currentRoute: PelangganPage.routeName), 
       
       body: Column(
@@ -175,7 +155,7 @@ class _PelangganPageState extends State<PelangganPage> {
                 ),
               ],
             ),
-            // Header menggunakan Builder agar IconButton dapat mengakses Scaffold.of(context)
+
             child: Builder( 
               builder: (scaffoldContext) => _buildHeader(scaffoldContext),
             ),
@@ -218,20 +198,15 @@ class _PelangganPageState extends State<PelangganPage> {
           ),
         ],
       ),
-      // 8. FUNGSI PLACEHOLDER MODAL TAMBAH PELANGGAN (diletakkan di luar build)
     );
   }
 
-  // ----------------------------------------------------
-  // 3. WIDGET HEADER (Modifikasi Icon Cart)
-  // ----------------------------------------------------
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            // Ikon Cart (Keranjang Belanja) - DIGANTI DENGAN IMAGE.ASSET
             Container(
               width: 40, height: 40,
               decoration: BoxDecoration(
@@ -239,14 +214,12 @@ class _PelangganPageState extends State<PelangganPage> {
                 color: DonatopiaColors.primaryPink.withOpacity(0.1),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0), // Padding untuk memastikan logo terlihat bagus di dalam Container
+                padding: const EdgeInsets.all(8.0), 
                 child: Image.asset(
-                  'assets/images/donatopia.png', // <--- PATH GAMBAR DONATOPIA
+                  'assets/images/donatopia.png', 
                   fit: BoxFit.contain,
                 ),
               ),
-              // Kode asli yang diganti:
-              // child: const Icon(Icons.shopping_cart_outlined, color: DonatopiaColors.cardValueColor, size: 24),
             ),
             const SizedBox(width: 10),
             const Column(
@@ -273,9 +246,6 @@ class _PelangganPageState extends State<PelangganPage> {
           ],
         ),
         
-        // Ikon Menu/Sidebar
-        // Catatan: Context di sini adalah context dari Builder di atas, 
-        // sehingga Scaffold.of(context) dapat bekerja.
         IconButton(
           icon: const Icon(Icons.menu, color: DonatopiaColors.darkText, size: 28),
           onPressed: () {
@@ -286,9 +256,6 @@ class _PelangganPageState extends State<PelangganPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // 4. WIDGET TITLE & ADD BUTTON (Tetap)
-  // ----------------------------------------------------
   Widget _buildCustomerTitle(int totalCustomers) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -333,10 +300,6 @@ class _PelangganPageState extends State<PelangganPage> {
       ],
     );
   }
-
-  // ----------------------------------------------------
-  // 5. WIDGET SEARCH BAR (Tetap)
-  // ----------------------------------------------------
   Widget _buildSearchBar() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
@@ -362,9 +325,6 @@ class _PelangganPageState extends State<PelangganPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // 6. WIDGET HISTORY CARD (Tetap)
-  // ----------------------------------------------------
   Widget _buildCustomerHistoryCard(CustomerHistory history) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10.0),
@@ -379,7 +339,6 @@ class _PelangganPageState extends State<PelangganPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Nama Pelanggan & Edit/Time
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -393,7 +352,6 @@ class _PelangganPageState extends State<PelangganPage> {
               ),
               Row(
                 children: [
-                  // Ikon Edit (simulasi)
                   const Icon(Icons.edit, color: DonatopiaColors.secondaryText, size: 16),
                   const SizedBox(width: 5),
                   // Waktu Transaksi
@@ -498,16 +456,6 @@ class _PelangganPageState extends State<PelangganPage> {
       ),
     );
   }
-
-  // ----------------------------------------------------
-  // 7. WIDGET SIDEBAR (FUNGSI INI DIHAPUS, DIGANTIKAN CUSTOMDRAWER)
-  // ----------------------------------------------------
-  // FUNGSI _buildSidebar() YANG LAMA SUDAH DIHAPUS DARI SINI
-  // ----------------------------------------------------
-  
-  // ----------------------------------------------------
-  // 8. FUNGSI PLACEHOLDER MODAL TAMBAH PELANGGAN (Tetap)
-  // ----------------------------------------------------
   void _showAddCustomerModal(BuildContext context) {
     showDialog(
       context: context,

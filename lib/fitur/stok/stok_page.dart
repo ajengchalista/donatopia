@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:donatopia/widgets/custom_drawer.dart'; // Dianggap ada
+import 'package:donatopia/widgets/custom_drawer.dart';
 
 class DonatopiaColors {
-  // Warna Utama
-  static const Color backgroundSoftTan = Color.fromARGB(255, 240, 229, 231); // Latar belakang body utama (soft pink/tan)
+  static const Color backgroundSoftTan = Color.fromARGB(255, 240, 229, 231); 
   static const Color primaryPink = Color(0xFFCC6073); // Pink Gelap/Warna Utama Card
   static const Color primaryText = Color(0xFF636363); // Teks gelap utama
-
-  // Header dan Bar
   static const Color barBackgroundWhite = Color(0xFFFFFFFF);
   static const Color secondaryText = Color(0xFF999999); // Teks abu-abu sekunder
-
-  // Warna Kartu Ringkasan (Pink Muda)
   static const Color softCardPink = Color.fromARGB(255, 255, 255, 255); 
   static const Color softTextPink = Color.fromARGB(255, 179, 93, 110); 
-  
-  // Warna Status
   static const Color statusAman = Color.fromARGB(255, 76, 175, 80); // Hijau
-  static const Color statusRendah = Color.fromARGB(255, 255, 87, 34); // Oranye/Merah
-  
-  // Warna Riwayat
-  static const Color historyBackground = Color.fromARGB(255, 255, 206, 206); // Sama seperti softCardPink
+  static const Color statusRendah = Color.fromARGB(255, 255, 87, 34); 
+  static const Color historyBackground = Color.fromARGB(255, 255, 206, 206); 
   static const Color historyTitle = primaryText;
   static const Color historySubText = Color(0xFF999999); 
-  static const Color historyPinkLabel = Color.fromARGB(255, 234, 234, 234); // Pink yang digunakan untuk label kategori history
+  static const Color historyPinkLabel = Color.fromARGB(255, 234, 234, 234);
 }
 
 class StokProduk {
@@ -148,10 +139,6 @@ class _StokBarangPageState extends State<StokBarangPage> {
       ),
     );
   }
-
-  // --- WIDGET HELPER ---
-  
-  // 1. App Bar
 PreferredSizeWidget _buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: DonatopiaColors.barBackgroundWhite,
@@ -195,8 +182,7 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
           return IconButton(
             icon: const Icon(Icons.menu, color: DonatopiaColors.secondaryText, size: 28),
             onPressed: () {
-              // Logika Buka Drawer/Menu
-              Scaffold.of(context).openEndDrawer(); // Membuka endDrawer yang baru ditambahkan
+              Scaffold.of(context).openEndDrawer(); 
             },
           );
         }
@@ -206,12 +192,9 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
     elevation: 0, 
   );
 }
-
-  // 2. Judul Halaman (DIMODIFIKASI: Menghapus background card)
   Widget _buildPageTitleContainer() {
     return Container(
       width: double.infinity,
-      // Dihapus: color: DonatopiaColors.softCardPink, 
       color: DonatopiaColors.backgroundSoftTan, // Menggunakan warna background halaman
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 15.0, top: 5.0), // Padding disesuaikan
       child: const Column(
@@ -322,7 +305,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
     );
   }
 
-  // 4. Stok Produk Real-Time
   Widget _buildRealTimeStockSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,8 +314,7 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: DonatopiaColors.primaryText)
         ),
         const SizedBox(height: 10),
-        
-        // Tabel menggunakan ListView yang distrukturkan
+      
         Container(
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
@@ -361,8 +342,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
       ],
     );
   }
-
-  // Helper untuk Header Tabel Stok
   Widget _buildStockTableHeader() {
     const TextStyle headerStyle = TextStyle(
       fontSize: 12, 
@@ -384,7 +363,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
     );
   }
 
-  // Helper untuk Baris Tabel Stok
   Widget _buildStockTableRow(StokProduk produk) {
     const TextStyle dataStyle = TextStyle(fontSize: 12, color: DonatopiaColors.primaryText);
     const TextStyle productStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: DonatopiaColors.primaryText);
@@ -422,8 +400,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
       ),
     );
   }
-  
-  // Helper untuk label Kategori
   Widget _buildCategoryLabel(String label, Color background, Color text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -442,7 +418,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
     );
   }
 
-  // Helper untuk Chip Status
   Widget _buildStatusChip(String status, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -461,7 +436,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
     );
   }
 
-  // 5. Riwayat Perubahan Stok
   Widget _buildHistorySection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -477,7 +451,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
     );
   }
 
-  // Helper untuk Item Riwayat
   Widget _buildHistoryItem(RiwayatStok riwayat) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -527,8 +500,6 @@ PreferredSizeWidget _buildAppBar(BuildContext context) {
       ),
     );
   }
-  
-  // Helper untuk Label IN/OUT Riwayat
   Widget _buildHistoryLabel(String label) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

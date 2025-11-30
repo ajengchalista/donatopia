@@ -1,4 +1,3 @@
-// ignore_for_file: unused_import
 import 'package:flutter/material.dart';
 import 'package:donatopia/fitur/dashboard/dashboard_screen.dart';
 
@@ -13,12 +12,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  // 🎨 Warna sesuai gambar UI
   static const Color textDark = Color(0xFFCC6073);
 
-
-  // Error message
   String _errorMessage = '';
 
   void _handleLogin() {
@@ -87,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 40),
 
-              // Username field + error di bawah border
               _buildInputField(
                 controller: _usernameController,
                 label: 'Username',
@@ -97,7 +91,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 18),
 
-              // Password field (error tetap di luar)
               _buildInputField(
                 controller: _passwordController,
                 label: 'Kata Sandi',
@@ -105,7 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                 isPassword: true,
               ),
 
-              // Error password / umum
               if (_errorMessage.isNotEmpty &&
                   !_errorMessage.contains('Username'))
                 Padding(
@@ -132,30 +124,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // LOGO - Sekarang dengan background bulat di belakang gambar donat
   Widget _buildLogo() {
     return Container(
-      width: 90, // Ukuran container sedikit lebih besar untuk background
-      height: 90, // Ukuran container sedikit lebih besar untuk background
+      width: 90, 
+      height: 90, 
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: const Color.fromARGB(255, 248, 204, 211), // Warna pink untuk background bulat
+        color: const Color.fromARGB(255, 248, 204, 211), 
       ),
-      child: Center( // Pusatkan gambar donat di dalam lingkaran
+      child: Center( 
         child: ClipRRect(
           borderRadius: BorderRadius.circular(60),
           child: Image.asset(
             'assets/images/donatopia.png',
             fit: BoxFit.cover,
-            width: 100, // Ukuran gambar donat agar ada padding dari background
-            height: 100, // Ukuran gambar donat agar ada padding dari background
+            width: 100, 
+            height: 100, 
           ),
         ),
       ),
     );
   }
 
-  // INPUT FIELD — sekarang bisa menampilkan error tepat di bawah border
   Widget _buildInputField({
     required TextEditingController controller,
     required String label,
@@ -179,14 +169,13 @@ class _LoginPageState extends State<LoginPage> {
         TextField(
           controller: controller,
           obscureText: isPassword,
-          // ➡️ PERUBAHAN DI SINI: Ukuran font pada hintText diubah menjadi 14
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color.fromARGB(255, 249, 206, 210), 
             hintText: hint,
             hintStyle: const TextStyle(
               color: Color.fromARGB(255, 139, 133, 134),
-              fontSize: 15, // <--- Font size untuk hintText ditambahkan/diubah
+              fontSize: 15, 
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -208,8 +197,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-
-        // ‼️ ERROR Username muncul di sini (di bawah border)
         if (showErrorBelow)
           Padding(
             padding: const EdgeInsets.only(top: 6, left: 3),
@@ -226,7 +213,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // LOGIN BUTTON
   Widget _buildLoginButton() {
     return SizedBox(
       width: double.infinity,

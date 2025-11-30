@@ -6,11 +6,8 @@ import 'package:donatopia/fitur/pelanggan/pelanggan_page.dart';
 import 'package:donatopia/fitur/manajemen_pengguna/manajemen_pengguna_page.dart';
 import 'package:donatopia/fitur/laporan/laporan_penjualan.dart';
 import 'package:donatopia/fitur/stok/stok_page.dart';
-
-// ✅ IMPORT KRITIS: PASTIKAN INI ADALAH LOKASI LOGIN PAGE ANDA
 import 'package:donatopia/fitur/auth/screen/login_screen.dart'; 
 
-// Definisi Warna
 const Color primaryRedPink = Color(0xFFCC6073); 
 const Color highlightPink = Color(0xFFFDE6E9); 
 const Color cardLabelColor = Color.fromARGB(255, 139, 133, 134); 
@@ -43,7 +40,6 @@ class CustomDrawer extends StatelessWidget {
   final String currentRoute;
   const CustomDrawer({super.key, required this.currentRoute});
 
-  // Route constants
   static const String routeDashboard = '/dashboard';
   static const String routeKasir = '/kasir';
   static const String routeProduk = '/produk';
@@ -52,23 +48,13 @@ class CustomDrawer extends StatelessWidget {
   static const String routeManajemen = '/manajemen';
   static const String routeStokBarang = '/stok';
 
-
-  // ----------------------------------------------------
-  // FUNGSI 1: Logika Navigasi Aman ke Halaman Login (THE FIX)
-  // ----------------------------------------------------
   void _handleLogout(BuildContext context) {
-    // Navigasi yang aman: menghapus semua route sebelumnya dan menavigasi ke halaman Login.
     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const LoginPage()), 
       (Route<dynamic> route) => false, 
     );
   }
-
-  // ----------------------------------------------------
-  // FUNGSI 2: Menampilkan Dialog Konfirmasi Logout
-  // ----------------------------------------------------
   void _showLogoutConfirmation(BuildContext context) {
-    // Tutup drawer terlebih dahulu sebelum dialog muncul
     if (Scaffold.of(context).isEndDrawerOpen) {
         Navigator.of(context).pop(); 
     }
@@ -123,17 +109,12 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                
-                // Tombol Logout
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: TextButton(
                       onPressed: () {
-                        // Tutup dialog DULU
-                        Navigator.of(dialogContext).pop(); 
-                        
-                        // Lakukan logout dan navigasi ke halaman Login yang sesungguhnya
+                        Navigator.of(dialogContext).pop();
                         _handleLogout(dialogContext);
                       },
                       style: TextButton.styleFrom(
@@ -255,8 +236,7 @@ class CustomDrawer extends StatelessWidget {
   }
 
   void _navigateTo(BuildContext context, Widget page) {
-    Navigator.pop(context); // Tutup drawer
-    // Pengecekan route name agar tidak navigasi ulang ke halaman yang sama
+    Navigator.pop(context); 
     final currentRouteName = ModalRoute.of(context)?.settings.name;
     final targetRouteName = page is DashboardScreen ? DashboardScreen.routeName : 
                               page is KasirPage ? routeKasir : 
@@ -356,7 +336,6 @@ class CustomDrawer extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
-          // Panggil fungsi konfirmasi logout
           onTap: () => _showLogoutConfirmation(context), 
           borderRadius: BorderRadius.circular(8),
           child: Container(

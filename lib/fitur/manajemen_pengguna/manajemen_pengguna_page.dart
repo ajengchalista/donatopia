@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:donatopia/widgets/custom_drawer.dart'; 
-import 'dart:math'; // Diperlukan untuk menghasilkan ID acak
+import 'dart:math'; // ID acak
 
-// ----------------------------------------------------
-// MODEL DATA
-// ----------------------------------------------------
 enum UserRole { admin, petugas }
 
 class User {
@@ -15,9 +12,6 @@ class User {
   User({required this.id, required this.name, required this.role});
 }
 
-// ----------------------------------------------------
-// DEFINISI WARNA
-// ----------------------------------------------------
 class DonatopiaColors {
   static const Color backgroundSoftPink = Color.fromARGB(255, 240, 229, 231); 
   static const Color cardValueColor = Color(0xFFCC6073); 
@@ -40,9 +34,6 @@ class DonatopiaColors {
   static const Color addIconColor = Color(0xFFCC6073);
 }
 
-// ----------------------------------------------------
-// STATEFUL WIDGET UTAMA
-// ----------------------------------------------------
 class ManajemenPenggunaPage extends StatefulWidget {
   static const String routeName = '/manajemen-pengguna';
 
@@ -79,10 +70,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
       return user.name.toLowerCase().contains(searchLower);
     }).toList();
   }
-
-  // ----------------------------------------------------
-  // METODE BUILD
-  // ----------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final filteredUsers = _filteredUsers;
@@ -110,7 +97,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
                 ),
               ],
             ),
-            // Menggunakan Builder untuk mendapatkan Context yang tepat
             child: Builder(
               builder: (headerContext) {
                 return _buildHeader(headerContext);
@@ -118,7 +104,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
             ),
           ),
 
-          // Konten Utama (Diberi padding horizontal)
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
@@ -162,9 +147,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // 1. WIDGET HEADER (Logo dan Menu) - TIDAK BERUBAH
-  // ----------------------------------------------------
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,9 +214,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // 2. WIDGET TITLE SECTION - TIDAK BERUBAH
-  // ----------------------------------------------------
   Widget _buildTitleSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,10 +238,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
       ],
     );
   }
-
-  // ----------------------------------------------------
-  // 3. WIDGET SEARCH BAR - TIDAK BERUBAH
-  // ----------------------------------------------------
   Widget _buildSearchBar() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
@@ -299,9 +274,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // 4. WIDGET ADD BUTTONS (Tambah Admin & Petugas) - TIDAK BERUBAH
-  // ----------------------------------------------------
   Widget _buildAddButtons() {
     return Row(
       children: [
@@ -371,9 +343,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // 6. WIDGET USER CARD - TIDAK BERUBAH
-  // ----------------------------------------------------
   Widget _buildUserCard(User user) {
     final isPetugas = user.role == UserRole.petugas;
     final roleText = isPetugas ? 'Petugas' : 'Admin';
@@ -429,7 +398,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
               ],
             ),
 
-            // Tombol Hapus (Mirip ikon keranjang sampah warna pink)
             GestureDetector(
               onTap: () => _confirmDeleteUser(user),
               child: Container(
@@ -447,10 +415,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
       ),
     );
   }
-
-  // ----------------------------------------------------
-  // FUNGSI MODAL TAMBAH PENGGUNA (TIDAK BERUBAH)
-  // ----------------------------------------------------
 
   void _showAddUserModal(UserRole role) {
     String roleName = role == UserRole.admin ? 'Admin' : 'Petugas';
@@ -607,9 +571,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
     );
   }
 
-  // ----------------------------------------------------
-  // WIDGET BANTUAN UNTUK TEXTFIELD - TIDAK BERUBAH
-  // ----------------------------------------------------
   Widget _buildInputTextField({
     required TextEditingController controller,
     required String hint,
@@ -633,10 +594,6 @@ class _ManajemenPenggunaPageState extends State<ManajemenPenggunaPage> {
       ),
     );
   }
-
-  // ----------------------------------------------------
-  // FUNGSI MODAL HAPUS PENGGUNA (TIDAK BERUBAH)
-  // ----------------------------------------------------
 
   void _confirmDeleteUser(User user) {
     showDialog(

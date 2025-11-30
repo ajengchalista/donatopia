@@ -13,13 +13,9 @@ class DonatopiaColors {
   static const Color chartLineColor = Color.fromARGB(255, 245, 179, 190); 
   static const Color gradientBorderLightPink = Color.fromARGB(255, 255, 215, 225);
   static const Color gradientBorderFuchsia = Color.fromARGB(255, 250, 150, 170);
-  // Tambahkan warna baru untuk latar belakang item transaksi
+ 
   static const Color latestTransactionItemBg = Color.fromARGB(255, 255, 235, 240); 
 }
-
-// -------------------------------------------------------------------------
-// WIDGET DASHBOARD
-// -------------------------------------------------------------------------
 
 class DashboardScreen extends StatefulWidget {
   static const String routeName = '/dashboard'; 
@@ -102,7 +98,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Baris 1 Info Cards (SUDAH ADA)
             Row(
               children: [
                 Expanded(
@@ -128,8 +123,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
             const SizedBox(height: 16),
-
-            // Baris 2 Info Cards (SUDAH ADA)
             Row(
               children: [
                 Expanded(
@@ -155,17 +148,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
 
             const SizedBox(height: 24),
-
-            // Grafik Penjualan (SUDAH ADA)
             _buildChartCard(context),
 
             const SizedBox(height: 24), 
-
-            // =========================================================
-            // START: WIDGET BARU YANG DITAMBAHKAN
-            // =========================================================
-
-            // Card Jumlah Transaksi
             _buildTransactionChartCard(context),
 
             const SizedBox(height: 24), 
@@ -173,10 +158,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // Card Transaksi Terbaru
             _buildLatestTransactionCard(context),
 
-            // =========================================================
-            // END: WIDGET BARU YANG DITAMBAHKAN
-            // =========================================================
-            
             const SizedBox(height: 16), // Padding akhir
           ],
         ),
@@ -184,7 +165,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Widget untuk Card Informasi Utama (TETAP SAMA)
   Widget _buildInfoCard(
     BuildContext context, {
     required String label,
@@ -270,7 +250,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Widget untuk Card Grafik Penjualan (TETAP SAMA)
   Widget _buildChartCard(BuildContext context) {
     final CustomPainter activePainter = isWeeklyActive
         ? _ChartWeeklyPlaceholderPainter()
@@ -410,7 +389,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Tombol Mingguan/Bulanan di dalam Grafik (TETAP SAMA)
   Widget _buildChartButton(String text, bool isActive) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
@@ -433,10 +411,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
-
-  // =======================================================================
-  // WIDGET BARU: CARD JUMLAH TRANSAKSI (Bar Chart)
-  // =======================================================================
   Widget _buildTransactionChartCard(BuildContext context) {
     return Card(
       color: DonatopiaColors.cardBackground,
@@ -481,8 +455,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 const SizedBox(width: 8),
-
-                // Area Bar Chart
                 Expanded(
                   child: Container(
                     height: 200,
@@ -493,7 +465,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                     child: CustomPaint(
-                      // Menggunakan Bar Chart Painter yang baru
                       painter: _BarChartPlaceholderPainter(), 
                       child: Container(height: 200, width: double.infinity),
                     ),
@@ -522,10 +493,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-
-  // =======================================================================
-  // WIDGET BARU: CARD TRANSAKSI TERBARU
-  // =======================================================================
   Widget _buildLatestTransactionCard(BuildContext context) {
     return Card(
       margin: EdgeInsets.zero, 
@@ -558,14 +525,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               amount: 'Rp 21.000',
               time: '09:15',
             ),
-            // Anda bisa menambahkan item transaksi lain di sini
           ],
         ),
       ),
     );
   }
 
-  // WIDGET ITEM TRANSAKSI
   Widget _buildTransactionItem({
     required String transactionId,
     required String customerName,
@@ -643,13 +608,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-// =========================================================================
-// CUSTOM PAINTERS (DITAMBAHKAN Bar Chart Painter)
-// =========================================================================
-
 // CustomPainter untuk Bar Chart Transaksi Mingguan (BARU)
 class _BarChartPlaceholderPainter extends CustomPainter {
-  // Data dummy untuk Bar Chart (Tinggi Bar: Sen-Min)
   final List<double> barHeights = [0, 0, 0, 2.5, 2.7, 3.5, 2.2]; 
   final List<int> visibleDaysIndex = [0, 2, 4, 6]; // Index Sen, Rab, Jum, Min
   
@@ -662,14 +622,12 @@ class _BarChartPlaceholderPainter extends CustomPainter {
     // Skala Y (0-4)
     double getY(double value) => size.height - (value * (size.height / 4));
 
-    // Menggambar Bar
     for (int i = 0; i < barHeights.length; i++) {
       final xCenter = (i * widthPerDay) + (widthPerDay / 2);
       final xLeft = xCenter - barWidth / 2;
       final yTop = getY(barHeights[i]); 
       final yBottom = getY(0); 
 
-      // Jika barHeights[i] lebih besar dari 0, gambarlah
       if (barHeights[i] > 0) {
           final RRect barRect = RRect.fromRectAndCorners(
             Rect.fromLTRB(xLeft, yTop, xLeft + barWidth, yBottom),
@@ -680,7 +638,6 @@ class _BarChartPlaceholderPainter extends CustomPainter {
       }
     }
 
-    // Menggambar Garis Grid Horizontal
     final gridPaint = Paint()
       ..color = Colors.grey.shade200
       ..strokeWidth = 1.0;
@@ -696,7 +653,6 @@ class _BarChartPlaceholderPainter extends CustomPainter {
 }
 
 
-// CustomPainter untuk MINGGUAN (TETAP SAMA)
 class _ChartWeeklyPlaceholderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -711,20 +667,17 @@ class _ChartWeeklyPlaceholderPainter extends CustomPainter {
       ..color = DonatopiaColors.chartLineColor
       ..style = PaintingStyle.fill;
 
-    // Data Placeholder Mingguan (7 titik, disesuaikan agar cocok dengan gambar)
     final points = [
-      Offset(size.width * 0.0, size.height * (1 - 0/4)), // Sen - 0
-      Offset(size.width * 0.14285, size.height * (1 - 0/4)), // Sel - 0
-      Offset(size.width * 0.2857, size.height * (1 - 0/4)), // Rab - 0
-      Offset(size.width * 0.42855, size.height * (1 - 0/4)), // Kam - 0
-      Offset(size.width * 0.5714, size.height * (1 - 2/4)), // Jum - 2
-      Offset(size.width * 0.71425, size.height * (1 - 2.5/4)), // Sab - 2.5
-      Offset(size.width * 0.8571, size.height * (1 - 3/4)), // Min - 3
-      Offset(size.width * 1.0, size.height * (1 - 1.5/4)), // Sen - 1.5 (titik semu untuk garis berakhir)
+      Offset(size.width * 0.0, size.height * (1 - 0/4)), // Sen - 
+      Offset(size.width * 0.14285, size.height * (1 - 0/4)), // Sel - 
+      Offset(size.width * 0.2857, size.height * (1 - 0/4)), // Rab - 
+      Offset(size.width * 0.42855, size.height * (1 - 0/4)), // Kam -
+      Offset(size.width * 0.5714, size.height * (1 - 2/4)), // Jum - 
+      Offset(size.width * 0.71425, size.height * (1 - 2.5/4)), // Sab - 
+      Offset(size.width * 0.8571, size.height * (1 - 3/4)), // Min -
+      Offset(size.width * 1.0, size.height * (1 - 1.5/4)), // Sen - 
     ];
 
-
-    // Menggambar Garis Grid Horizontal
     final gridPaint = Paint()
       ..color = Colors.grey.shade200
       ..strokeWidth = 1.0;
@@ -733,8 +686,7 @@ class _ChartWeeklyPlaceholderPainter extends CustomPainter {
       final yPos = size.height - (y * (size.height / 4));
       canvas.drawLine(Offset(0, yPos), Offset(size.width, yPos), gridPaint);
     }
-    
-    // Menggambar Area
+
     final path = Path();
     path.moveTo(points.first.dx, size.height); 
     path.lineTo(points.first.dx, points.first.dy);
@@ -746,7 +698,6 @@ class _ChartWeeklyPlaceholderPainter extends CustomPainter {
 
     canvas.drawPath(path, pinkPaint);
 
-    // Menggambar Garis Line
     final linePath = Path();
     linePath.moveTo(points.first.dx, points.first.dy);
     for (int i = 1; i < points.length; i++) {
@@ -754,7 +705,6 @@ class _ChartWeeklyPlaceholderPainter extends CustomPainter {
     }
     canvas.drawPath(linePath, linePaint);
 
-    // Menggambar Titik (Dots)
     for (var point in points) {
       canvas.drawCircle(point, 3.0, dotPaint);
     }
@@ -764,7 +714,6 @@ class _ChartWeeklyPlaceholderPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// CustomPainter untuk BULANAN (TETAP SAMA)
 class _ChartMonthlyPlaceholderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -778,11 +727,9 @@ class _ChartMonthlyPlaceholderPainter extends CustomPainter {
     final dotPaint = Paint()
       ..color = DonatopiaColors.chartLineColor
       ..style = PaintingStyle.fill;
-    
-    // Skala Y (0-4)
+
     double getY(double value) => size.height - (value * (size.height / 4));
 
-    // Data Placeholder Bulanan (12 titik: Jan-Des)
     final points = [
       Offset(size.width * (0 / 11), getY(0)), // Jan
       Offset(size.width * (1 / 11), getY(0)), // Feb
@@ -798,7 +745,6 @@ class _ChartMonthlyPlaceholderPainter extends CustomPainter {
       Offset(size.width * (11 / 11), getY(1.5)), // Des 
     ];
 
-    // Menggambar Garis Grid Horizontal
     final gridPaint = Paint()
       ..color = Colors.grey.shade200
       ..strokeWidth = 1.0;
@@ -807,24 +753,14 @@ class _ChartMonthlyPlaceholderPainter extends CustomPainter {
       final yPos = getY(y);
       canvas.drawLine(Offset(0, yPos), Offset(size.width, yPos), gridPaint);
     }
-
-    // Menggambar Area Grafik
     final path = Path();
     path.moveTo(points.first.dx, size.height); 
-    
-    // Menemukan indeks titik pertama yang aktif (di atas y=0)
+
     int firstActiveIndex = points.indexWhere((p) => p.dy < getY(0));
-    if (firstActiveIndex == -1) firstActiveIndex = points.length; // Jika semua 0
-
-    // Jika ada titik aktif
+    if (firstActiveIndex == -1) firstActiveIndex = points.length; 
     if (firstActiveIndex < points.length) {
-      // Garis bawah (dari titik aktif pertama di y=0)
       path.lineTo(points[firstActiveIndex - 1].dx, size.height);
-      
-      // Garis ke atas dari titik 0 terakhir (Agu)
       path.lineTo(points[firstActiveIndex - 1].dx, points[firstActiveIndex - 1].dy);
-
-      // Lanjutkan ke titik aktif pertama (Sep)
       for (int i = firstActiveIndex; i < points.length; i++) {
         path.lineTo(points[i].dx, points[i].dy);
       }
@@ -833,8 +769,6 @@ class _ChartMonthlyPlaceholderPainter extends CustomPainter {
       path.close();
 
       canvas.drawPath(path, pinkPaint);
-
-      // Menggambar Garis Line (hanya di titik aktif)
       final linePath = Path();
       linePath.moveTo(points[firstActiveIndex].dx, points[firstActiveIndex].dy);
       for (int i = firstActiveIndex + 1; i < points.length; i++) {
@@ -842,8 +776,6 @@ class _ChartMonthlyPlaceholderPainter extends CustomPainter {
       }
       canvas.drawPath(linePath, linePaint);
     }
-
-    // Menggambar Titik (Dots) di atas garis (hanya titik aktif)
     for (int i = firstActiveIndex; i < points.length; i++) {
         canvas.drawCircle(points[i], 3.0, dotPaint);
     }
