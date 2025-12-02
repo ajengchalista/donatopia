@@ -11,6 +11,8 @@ import 'package:donatopia/fitur/laporan/laporan_penjualan.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Inisialisasi Supabase (Tetap)
   await Supabase.initialize(
     url: 'https://goyqzckzuomyekonggli.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdveXF6Y2t6dW9teWVrb25nZ2xpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzA0MTAsImV4cCI6MjA3ODA0NjQxMH0.SGCEmThI0GsI6F51_E38F_7Y8S0w46e64tbTctncSG4',
@@ -19,11 +21,14 @@ void main() async {
   runApp(const MyApp());
 }
 
+// Global akses ke klien Supabase
+final supabase = Supabase.instance.client;
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) { 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Donatopia Kasir', 
@@ -37,6 +42,7 @@ class MyApp extends StatelessWidget {
         LaporanPenjualanPage.routeName: (context) => const LaporanPenjualanPage(),
       },
       
+      // Mengarahkan aplikasi pertama kali ke rute '/' (LoginPage)
       initialRoute: '/',
     );
   }

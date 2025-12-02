@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:donatopia/fitur/dashboard/dashboard_screen.dart';
+// Updated Login Page with Correct Email-based Supabase Authentication Integration
+// NOTE: UI is unchanged. Only backend login logic updated.
 
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,24 +18,31 @@ class _LoginPageState extends State<LoginPage> {
 
   String _errorMessage = '';
 
-  void _handleLogin() {
-    String username = _usernameController.text.trim();
+  Future<void> _handleLogin() async {
+    String email = _usernameController.text.trim();
     String password = _passwordController.text.trim();
 
     setState(() {
       _errorMessage = '';
     });
 
-    if (username.isEmpty) {
+    if (email.isEmpty) {
       setState(() {
-        _errorMessage = 'Username wajib di isi.';
+        _errorMessage = 'Email wajib di isi.';
+      });
+      return;
+    }
+
+    if (!email.contains('@')) {
+      setState(() {
+        _errorMessage = 'Format email tidak valid.';
       });
       return;
     }
 
     if (password.isEmpty) {
       setState(() {
-        _errorMessage = 'Kata Sandi wajib di isi.';
+        _errorMessage = 'Kata sandi wajib di isi.';
       });
       return;
     }
@@ -45,7 +54,23 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, '/dashboard');
+    try {
+      final authResponse = await Supabase.instance.client.auth
+          .signInWithPassword(email: email, password: password);
+
+      if (authResponse.user == null) {
+        setState(() {
+          _errorMessage = 'Email atau password salah.';
+        });
+        return;
+      }
+
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Email atau password salah.';
+      });
+    }
   }
 
   @override
@@ -61,9 +86,9 @@ class _LoginPageState extends State<LoginPage> {
               _buildLogo(),
               const SizedBox(height: 15),
 
-              Text(
+              const Text(
                 'Donatopia',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Color.fromARGB(255, 240, 153, 169),
                   fontSize: 36,
                   fontWeight: FontWeight.w700,
@@ -84,9 +109,9 @@ class _LoginPageState extends State<LoginPage> {
 
               _buildInputField(
                 controller: _usernameController,
-                label: 'Username',
-                hint: 'Masukkan Username',
-                showErrorBelow: _errorMessage.contains('Username'),
+                label: 'Email',
+                hint: 'Masukkan Email',
+                showErrorBelow: _errorMessage.contains('Email'),
                 errorText: _errorMessage,
               ),
               const SizedBox(height: 18),
@@ -98,8 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                 isPassword: true,
               ),
 
-              if (_errorMessage.isNotEmpty &&
-                  !_errorMessage.contains('Username'))
+              if (_errorMessage.isNotEmpty && !_errorMessage.contains('Email'))
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Align(
@@ -126,20 +150,20 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLogo() {
     return Container(
-      width: 90, 
-      height: 90, 
+      width: 90,
+      height: 90,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: const Color.fromARGB(255, 248, 204, 211), 
+        color: const Color.fromARGB(255, 248, 204, 211),
       ),
-      child: Center( 
+      child: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(60),
           child: Image.asset(
             'assets/images/donatopia.png',
             fit: BoxFit.cover,
-            width: 100, 
-            height: 100, 
+            width: 100,
+            height: 100,
           ),
         ),
       ),
@@ -161,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
           label,
           style: const TextStyle(
             color: Colors.black,
-            fontSize: 15, 
+            fontSize: 15,
           ),
         ),
         const SizedBox(height: 8),
@@ -171,23 +195,23 @@ class _LoginPageState extends State<LoginPage> {
           obscureText: isPassword,
           decoration: InputDecoration(
             filled: true,
-            fillColor: const Color.fromARGB(255, 249, 206, 210), 
+            fillColor: const Color.fromARGB(255, 249, 206, 210),
             hintText: hint,
             hintStyle: const TextStyle(
               color: Color.fromARGB(255, 139, 133, 134),
-              fontSize: 15, 
+              fontSize: 15,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: Color.fromARGB(255, 216, 205, 206), 
+                color: Color.fromARGB(255, 216, 205, 206),
                 width: 1.5,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: Color.fromARGB(255, 240, 169, 179), 
+                color: Color.fromARGB(255, 240, 169, 179),
                 width: 2,
               ),
             ),
