@@ -1,6 +1,3 @@
-// Updated Login Page with Correct Email-based Supabase Authentication Integration
-// NOTE: UI is unchanged. Only backend login logic updated.
-
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -12,63 +9,56 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  static const Color textDark = Color(0xFFCC6073);
 
-  String _errorMessage = '';
+  String _emailError = '';
+  String _passwordError = '';
+  String _generalError = ''; // untuk error login (email/pass salah)
 
   Future<void> _handleLogin() async {
-    String email = _usernameController.text.trim();
-    String password = _passwordController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
+    // Reset error
     setState(() {
-      _errorMessage = '';
+      _emailError = '';
+      _passwordError = '';
+      _generalError = '';
     });
 
+    // Validasi Email
     if (email.isEmpty) {
-      setState(() {
-        _errorMessage = 'Email wajib di isi.';
-      });
+      setState(() => _emailError = 'Email wajib diisi.');
+      return;
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      setState(() => _emailError = 'Format email tidak valid.');
       return;
     }
 
-    if (!email.contains('@')) {
-      setState(() {
-        _errorMessage = 'Format email tidak valid.';
-      });
-      return;
-    }
-
+    // Validasi Password
     if (password.isEmpty) {
-      setState(() {
-        _errorMessage = 'Kata sandi wajib di isi.';
-      });
+      setState(() => _passwordError = 'Kata sandi wajib diisi.');
       return;
     }
-
     if (password.length < 6) {
-      setState(() {
-        _errorMessage = 'Kata sandi minimal 6 huruf.';
-      });
+      setState(() => _passwordError = 'Kata sandi minimal 6 karakter.');
       return;
     }
 
     try {
-      final authResponse = await Supabase.instance.client.auth
+      final response = await Supabase.instance.client.auth
           .signInWithPassword(email: email, password: password);
 
-      if (authResponse.user == null) {
-        setState(() {
-          _errorMessage = 'Email atau password salah.';
-        });
-        return;
+      if (response.user != null) {
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/dashboard');
+        }
       }
-
-      Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
       setState(() {
-        _errorMessage = 'Email atau password salah.';
+        _generalError = 'kata sandi salah.';
       });
     }
   }
@@ -107,31 +97,34 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 40),
 
+              // EMAIL FIELD + ERROR DI BAWAHNYA
               _buildInputField(
-                controller: _usernameController,
+                controller: _emailController,
                 label: 'Email',
-                hint: 'Masukkan Email',
-                showErrorBelow: _errorMessage.contains('Email'),
-                errorText: _errorMessage,
+                hint: 'Masukkan email',
+                errorText: _emailError,
               ),
               const SizedBox(height: 18),
 
+              // PASSWORD FIELD + ERROR DI BAWAHNYA
               _buildInputField(
                 controller: _passwordController,
                 label: 'Kata Sandi',
                 hint: 'Masukkan kata sandi',
                 isPassword: true,
+                errorText: _passwordError,
               ),
 
-              if (_errorMessage.isNotEmpty && !_errorMessage.contains('Email'))
+              // General error (email/pass salah dari server)
+              if (_generalError.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      _errorMessage,
+                      _generalError,
                       style: const TextStyle(
-                        color: textDark,
+                        color: Color(0xFFCC6073),
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
@@ -152,9 +145,9 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       width: 90,
       height: 90,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: const Color.fromARGB(255, 248, 204, 211),
+        color: Color.fromARGB(255, 248, 204, 211),
       ),
       child: Center(
         child: ClipRRect(
@@ -175,7 +168,6 @@ class _LoginPageState extends State<LoginPage> {
     required String label,
     required String hint,
     bool isPassword = false,
-    bool showErrorBelow = false,
     String errorText = '',
   }) {
     return Column(
@@ -183,10 +175,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 15,
-          ),
+          style: const TextStyle(color: Colors.black, fontSize: 15),
         ),
         const SizedBox(height: 8),
 
@@ -197,10 +186,7 @@ class _LoginPageState extends State<LoginPage> {
             filled: true,
             fillColor: const Color.fromARGB(255, 249, 206, 210),
             hintText: hint,
-            hintStyle: const TextStyle(
-              color: Color.fromARGB(255, 139, 133, 134),
-              fontSize: 15,
-            ),
+            hintStyle: const TextStyle(color: Color.fromARGB(255, 139, 133, 134), fontSize: 15),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
@@ -215,20 +201,19 @@ class _LoginPageState extends State<LoginPage> {
                 width: 2,
               ),
             ),
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 14,
-              horizontal: 16,
-            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
           ),
         ),
-        if (showErrorBelow)
+
+        // ERROR TEXT UNTUK KOLOM INI
+        if (errorText.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 6, left: 3),
             child: Text(
               errorText,
               style: const TextStyle(
-                color: textDark,
-                fontSize: 14,
+                color: Color(0xFFCC6073),
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -252,11 +237,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: const Text(
           'Login',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
     );
